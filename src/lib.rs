@@ -59,6 +59,12 @@ impl<T, K: PartialOrd> PartialOrd for CmpByKey<'_, T, K> {
     }
 }
 
+impl<T, K: Ord> Ord for CmpByKey<'_, T, K> {
+    fn cmp(&self, other: &Self) -> cmp::Ordering {
+        self.get_key().cmp(&other.get_key())
+    }
+}
+
 impl<T, K: PartialEq> PartialEq for CmpByKey<'_, T, K> {
     fn eq(&self, other: &Self) -> bool {
         self.get_key() == other.get_key()
