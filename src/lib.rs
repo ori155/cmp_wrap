@@ -1,6 +1,6 @@
 use core::cmp;
 
-struct CmpByKey<'k, T, K> {
+pub struct CmpByKey<'k, T, K> {
     inner: T,
     key_func: &'k dyn Fn(&T) -> K
 }
@@ -46,6 +46,18 @@ mod tests {
         let y33 = CmpByKey::new(33, &|x: &i32| -> i32 { -*x });
 
         assert!(x32 > y33, "should be in reversed order" );
+
+    }
+
+    #[test]
+    fn works_with_references() {
+        let x32 = 32;
+        let x33 = 33;
+
+        let r32 = CmpByKey::new(&x32, &|x: &&i32| -> i32 { -**x });
+        let r33 = CmpByKey::new(&x33, &|x: &&i32| -> i32 { -**x });
+
+        assert!(r32 > r33, "should be in reversed order" );
 
     }
 }
