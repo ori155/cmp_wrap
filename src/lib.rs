@@ -3,6 +3,26 @@
 //! If so, this crate is for you!
 //!
 //! # Example
+//!
+//! ## Using context
+//! You probably have some kind of context in which you would like to compare your values, such as
+//! length of vectors or the first value.
+//!
+//!
+//! ```
+//! use cmp_wrap::KeyCmpContext;
+//!
+//! let by_length = KeyCmpContext::new(&|v: &Vec<_>| v.len());
+//!
+//! let long_vec = by_length.wrap(vec![1,2,3,4]);
+//! let short_vec = by_length.wrap(vec![1,2]);
+//!
+//! assert!(long_vec > short_vec, "The vec {:?} is longer then {:?}", long_vec, short_vec);
+//!
+//! ```
+//!
+//! ## By direct creation
+//! you can define the key function on a "case by case" basis.
 //! ```
 //! use cmp_wrap::CmpByKey;
 //!
@@ -14,10 +34,10 @@
 //! assert!(long_vec > short_vec, "The vector {:?} is longer then {:?}", long_vec, short_vec);
 //! ```
 
-
-use core::{cmp, fmt};
+pub type KeyFunction<T,K> = dyn Fn(&T) -> K;
 
 mod wrappers;
-
+mod context;
 
 pub use wrappers::CmpByKey;
+pub use context::KeyCmpContext;

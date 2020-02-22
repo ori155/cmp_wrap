@@ -1,4 +1,5 @@
 use core::{cmp, fmt};
+use crate::KeyFunction;
 
 /// The main structure of this crate.
 /// Lets you define a "key function" over any structure, which will change the way the value
@@ -6,7 +7,7 @@ use core::{cmp, fmt};
 /// (such as max heaps, sorted trees and so on), with different comparision criteria.
 pub struct CmpByKey<'k, T, K> {
     inner: T,
-    key_func: &'k dyn Fn(&T) -> K
+    key_func: &'k KeyFunction<T, K>
 }
 
 impl<'k, T, K> CmpByKey<'k, T,K> {
@@ -18,7 +19,7 @@ impl<'k, T, K> CmpByKey<'k, T,K> {
     /// use cmp_wrap::CmpByKey;
     /// let x = CmpByKey::new(32, &|x: &i32| -> i32 { -*x });
     /// ```
-    pub fn new<'kf>(value: T, key_func: &'kf dyn Fn(&T) -> K) -> Self
+    pub fn new<'kf>(value: T, key_func: &'kf KeyFunction<T, K>) -> Self
         where 'kf: 'k
     {
         Self{ inner: value, key_func }
