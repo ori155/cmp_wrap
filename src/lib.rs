@@ -4,7 +4,7 @@
 //! If so, that crate is for you.
 
 
-use core::cmp;
+use core::{cmp, fmt};
 
 /// The main structure of this crate.
 /// Lets you define a "key function" over any structure, which will change the way the value
@@ -67,6 +67,12 @@ impl<T, K: PartialEq> PartialEq for CmpByKey<'_, T, K> {
 
 impl<T, K: Eq> Eq for CmpByKey<'_, T, K> {}
 
+impl<T: fmt::Debug, K> fmt::Debug for CmpByKey<'_, T, K> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
+        self.inner.fmt(f)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::CmpByKey;
@@ -78,6 +84,16 @@ mod tests {
 
         assert!(x32 > y33, "should be in reversed order" );
 
+    }
+
+    #[test]
+    fn compare_vectors_by_len() {
+        let len_as_key = |v: &Vec<_>| v.len();
+
+        let long_vec = CmpByKey::new(vec![1,2,3,4], &len_as_key);
+        let short_vec = CmpByKey::new(vec![1,2], &len_as_key);
+
+        assert!(long_vec > short_vec, "The vector {:?} is longer then {:?}", long_vec, short_vec);
     }
 
     #[test]
