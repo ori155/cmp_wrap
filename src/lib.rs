@@ -1,11 +1,28 @@
 use core::cmp;
 
+//! # cmp_wrap
+//!
+//! Have you ever needed to compare the same data by different fields, depending on context?
+//! If so, that crate is for you.
+
+/// The main structure of this crate.
+/// Lets you define a "key function" over any structure, which will change the way the value
+/// is being compared. Very useful when you need to enter your data to different data structures
+/// (such as max heaps, sorted trees and so on), with different comparision criteria.
 pub struct CmpByKey<'k, T, K> {
     inner: T,
     key_func: &'k dyn Fn(&T) -> K
 }
 
 impl<'k, T, K> CmpByKey<'k, T,K> {
+    /// Let you wrap a value with a key function which defines the way to compare it to other
+    /// values.
+    ///
+    /// # Example
+    /// ```
+    /// use cmp_wrap::CmpByKey;
+    /// let x = CmpByKey::new(32, &|x: &i32| -> i32 { -*x });
+    /// ```
     pub fn new<'kf>(value: T, key_func: &'kf dyn Fn(&T) -> K) -> Self
         where 'kf: 'k
     {
@@ -34,11 +51,6 @@ impl<T, K: Eq> Eq for CmpByKey<'_, T, K> {}
 #[cfg(test)]
 mod tests {
     use crate::CmpByKey;
-
-    #[test]
-    fn can_wrap_i32_with_closure() {
-        let x = CmpByKey::new(32, &|x: &i32| -> i32 { -*x });
-    }
 
     #[test]
     fn can_compare_two_i32_with_reversed_order() {
