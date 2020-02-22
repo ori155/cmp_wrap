@@ -1,9 +1,10 @@
-use core::cmp;
-
 //! # cmp_wrap
 //!
 //! Have you ever needed to compare the same data by different fields, depending on context?
 //! If so, that crate is for you.
+
+
+use core::cmp;
 
 /// The main structure of this crate.
 /// Lets you define a "key function" over any structure, which will change the way the value
@@ -27,6 +28,24 @@ impl<'k, T, K> CmpByKey<'k, T,K> {
         where 'kf: 'k
     {
         Self{ inner: value, key_func }
+    }
+
+    /// Lets you get the original value which the wrapper wrappes, destroys the wrapper.
+    ///
+    /// # Example
+    /// ```
+    /// use cmp_wrap::CmpByKey;
+    /// let v: i32 = 32;
+    ///
+    /// fn is_type_i32(x: i32) {};
+    ///
+    /// let x = CmpByKey::new(v, &|x: &i32| -> i32 { -*x });
+    /// let v_again = x.remove_wrapper();
+    ///
+    /// is_type_i32(v_again);
+    /// ```
+    pub fn remove_wrapper(self) -> T {
+        self.inner
     }
 
     fn get_key(&self) -> K {
