@@ -5,27 +5,27 @@ struct CmpByKey<'k, T, K> {
     key_func: &'k dyn Fn(&T) -> K
 }
 
-impl<'k, T,K> CmpByKey<'k, T,K> {
+impl<'k, T, K> CmpByKey<'k, T,K> {
     pub fn new<'kf>(value: T, key_func: &'kf dyn Fn(&T) -> K) -> Self
         where 'kf: 'k
     {
         Self{ inner: value, key_func }
     }
+
+    fn get_key(&self) -> K {
+        (self.key_func)(&self.inner)
+    }
 }
 
 impl<T, K: PartialOrd> PartialOrd for CmpByKey<'_, T, K> {
     fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
-        let self_key:  K = (self.key_func)(&self.inner);
-        let other_key: K = (other.key_func)(&other.inner);
-        self_key.partial_cmp(&other_key)
+        self.get_key().partial_cmp(&other.get_key())
     }
 }
 
 impl<T, K: PartialEq> PartialEq for CmpByKey<'_, T, K> {
     fn eq(&self, other: &Self) -> bool {
-        let self_key:  K = (self.key_func)(&self.inner);
-        let other_key: K = (other.key_func)(&other.inner);
-        self_key == other_key
+        self.get_key() == other.get_key()
     }
 }
 
