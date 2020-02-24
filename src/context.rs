@@ -32,3 +32,16 @@ impl<KF> KeyCmpContext<KF> {
         CmpByKey::new(value, &self.key_func)
     }
 }
+
+
+#[cfg(test)]
+mod test {
+    #[test]
+    fn context_new_accept_reference() {
+        use super::KeyCmpContext;
+
+        let _by_length = KeyCmpContext::new(&|v: &Vec<i32>| v.len());
+
+    }
+
+}
