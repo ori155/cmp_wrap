@@ -15,7 +15,7 @@ impl<'kf, KF, T> CmpByKey<'kf, KF, T> {
     ///
     /// # Example
     /// ```
-    /// use cmp_wrap::CmpByKey;
+    /// use cmp_wrap::permissive::CmpByKey;
     /// let x = CmpByKey::new(32, &|x: &i32| -> i32 { -*x });
     /// ```
     pub fn new<'rkf>(value: T, key_func: &'rkf KF) -> Self where
@@ -28,7 +28,7 @@ impl<'kf, KF, T> CmpByKey<'kf, KF, T> {
     ///
     /// # Example
     /// ```
-    /// use cmp_wrap::CmpByKey;
+    /// use cmp_wrap::permissive::CmpByKey;
     /// let v: i32 = 32;
     ///
     /// fn is_type_i32(x: i32) {};
@@ -87,7 +87,7 @@ impl<T: fmt::Debug, KF> fmt::Debug for CmpByKey<'_, KF, T> {
 
 #[cfg(test)]
 mod tests {
-    use crate::CmpByKey;
+    use super::CmpByKey;
 
     #[test]
     fn can_compare_two_i32_with_reversed_order() {

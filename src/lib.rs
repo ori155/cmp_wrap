@@ -10,7 +10,7 @@
 //!
 //!
 //! ```
-//! use cmp_wrap::KeyCmpContext;
+//! use cmp_wrap::permissive::KeyCmpContext;
 //!
 //! let by_length = KeyCmpContext::new(|v: &Vec<_>| v.len());
 //!
@@ -24,7 +24,7 @@
 //! ## By direct creation
 //! you can define the key function on a "case by case" basis.
 //! ```
-//! use cmp_wrap::CmpByKey;
+//! use cmp_wrap::permissive::CmpByKey;
 //!
 //! let len_as_key = |v: &Vec<_>| v.len();
 //!
@@ -34,8 +34,6 @@
 //! assert!(long_vec > short_vec, "The vector {:?} is longer then {:?}", long_vec, short_vec);
 //! ```
 
-mod wrappers;
-mod context;
+pub mod strict;
+pub mod permissive;
 
-pub use wrappers::CmpByKey;
-pub use context::KeyCmpContext;
