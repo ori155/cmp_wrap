@@ -1,4 +1,4 @@
-use crate::wrappers::CmpByKey;
+use super::wrappers::CmpByKey;
 
 /// Used to easily wrap multiple values with the same key function.
 pub struct KeyCmpContext<KF> {
@@ -17,7 +17,7 @@ impl<KF> KeyCmpContext<KF> {
     /// This is how you wrap values in the same context context.
     ///
     /// ```
-    /// use cmp_wrap::KeyCmpContext;
+    /// use cmp_wrap::strict::KeyCmpContext;
     ///
     /// let by_length = KeyCmpContext::new(|v: &Vec<_>| v.len());
     ///
