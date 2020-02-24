@@ -12,7 +12,7 @@
 //! ```
 //! use cmp_wrap::KeyCmpContext;
 //!
-//! let by_length = KeyCmpContext::new(&|v: &Vec<_>| v.len());
+//! let by_length = KeyCmpContext::new(|v: &Vec<_>| v.len());
 //!
 //! let long_vec = by_length.wrap(vec![1,2,3,4]);
 //! let short_vec = by_length.wrap(vec![1,2]);
@@ -33,8 +33,6 @@
 //!
 //! assert!(long_vec > short_vec, "The vector {:?} is longer then {:?}", long_vec, short_vec);
 //! ```
-
-pub type KeyFunction<T,K> = dyn Fn(&T) -> K;
 
 mod wrappers;
 mod context;
