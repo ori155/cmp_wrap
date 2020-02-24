@@ -49,10 +49,12 @@ impl<'kf, KF, T> CmpByKey<'kf, KF, T> {
     }
 }
 
-impl<T, K: PartialOrd, KF> PartialOrd for CmpByKey<'_, KF, T>  where
-    KF: Fn(&T) -> K
+impl<T, K, KF, OT, OKF, OK> PartialOrd<CmpByKey<'_, OKF, OT>> for CmpByKey<'_, KF, T>  where
+    K: PartialOrd<OK>,
+    KF:  Fn(&T) -> K,
+    OKF: Fn(&OT) -> OK,
 {
-    fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
+    fn partial_cmp(&self, other: &CmpByKey<'_, OKF, OT>) -> Option<cmp::Ordering> {
         self.get_key().partial_cmp(&other.get_key())
     }
 }
@@ -65,10 +67,12 @@ impl<T, K: Ord, KF> Ord for CmpByKey<'_, KF, T> where
     }
 }
 
-impl<T, K: PartialEq, KF> PartialEq for CmpByKey<'_, KF, T> where
-    KF: Fn(&T) -> K
+impl<T, K, KF, OT, OKF, OK> PartialEq<CmpByKey<'_, OKF, OT>> for CmpByKey<'_, KF, T> where
+    K: PartialEq<OK>,
+    KF: Fn(&T) -> K,
+    OKF: Fn(&OT) -> OK
 {
-    fn eq(&self, other: &Self) -> bool {
+fn eq(&self, other: &CmpByKey<'_, OKF, OT>) -> bool {
         self.get_key() == other.get_key()
     }
 }
@@ -107,5 +111,24 @@ mod tests {
 
         assert!(r32 > r33, "should be in reversed order" );
 
+    }
+
+    #[test]
+    fn dosnt_have_to_be_the_same_closure() {
+        let x32 = CmpByKey::new(32, &|x: &i32| -> i32 { -*x });
+        let y33 = CmpByKey::new(33, &|x: &i32| -> i32 { -*x });
+
+        assert!(x32 > y33, "should be in reversed order" );
+    }
+
+    #[test]
+    fn can_compare_different_types_with_same_key() {
+        struct A {v: i32}
+        struct B {v: i32}
+
+        let a = CmpByKey::new(A{v:3}, &|t: &A| t.v);
+        let b = CmpByKey::new(B{v:4}, &|t: &B| t.v);
+
+        assert!(a < b)
     }
 }
