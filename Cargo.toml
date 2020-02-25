@@ -1,12 +1,13 @@
 [package]
 name = "cmp_wrap"
-version = "0.1.2"
+version = "0.2.1"
 description = "Let you compare structes by context"
 license = "MIT"
 repository = "https://github.com/ori155/cmp_wrap"
 documentation = "https://docs.rs/cmp_wrap"
 authors = ["ori <oriashur155@gmail.com>"]
 edition = "2018"
+readme = "README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
