@@ -100,7 +100,7 @@ mod tests {
     }
 
     #[test]
-    fn works_with_references() {
+    fn works_with_simple_references() {
         let i_to_key = |x: &&i32| -> i32 { -**x };
 
         let x32 = 32;
@@ -110,6 +110,20 @@ mod tests {
         let r33 = CmpByKey::new(&x33, &i_to_key);
 
         assert!(r32 > r33, "should be in reversed order" );
+
+    }
+
+    #[test]
+    fn works_with_references() {
+        let i_to_key = |x: &&Vec<i32>| {x.len()};
+
+        let x32 = vec![32];
+        let x33 = vec![33,33];
+
+        let r32 = CmpByKey::new(&x32, &i_to_key);
+        let r33 = CmpByKey::new(&x33, &i_to_key);
+
+        assert!(r33 > r32, "should fit the length" );
 
     }
 
