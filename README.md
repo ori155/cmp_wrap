@@ -34,17 +34,6 @@ assert!(long_vec > short_vec, "The vec {:?} is longer then {:?}", long_vec, shor
 
 ```
 
-### By direct creation
-you can define the key function on a "case by case" basis.
-```rust
-use cmp_wrap::permissive::CmpByKey;
-
-let len_as_key = |v: &Vec<_>| v.len();
-
-let long_vec = CmpByKey::new(vec![1,2,3,4], &len_as_key);
-let short_vec = CmpByKey::new(vec![1,2], &len_as_key);
-
-assert!(long_vec > short_vec, "The vector {:?} is longer then {:?}", long_vec, short_vec);
-```
+One might want to use multiple contexts for the same data
 
 License: MIT

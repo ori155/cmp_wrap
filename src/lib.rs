@@ -59,7 +59,7 @@
 //! ```
 //!
 //! ## By direct creation
-//! you can define the key function on a "case by case" basis.
+//! you can define the key function on a "case by case" basis. This is not recommended.
 //! ```
 //! use cmp_wrap::permissive::CmpByKey;
 //!
