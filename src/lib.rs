@@ -33,7 +33,6 @@
 //! ```
 //!
 //! One might want to use multiple contexts for the same data
-// TODO: I would like to be able to take keying function for &T even when T = &T' (as bellow)
 //!
 //! ```
 //! use cmp_wrap::strict::KeyCmpContext;
