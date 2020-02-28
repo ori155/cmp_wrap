@@ -34,8 +34,33 @@ assert!(long_vec > short_vec, "The vec {:?} is longer then {:?}", long_vec, shor
 
 ```
 
+One might want to use multiple contexts for the same data
+
+```rust
+use cmp_wrap::strict::KeyCmpContext;
+
+
+let long_vec = vec![1,2,3,4];
+let short_vec = vec![4,2];
+
+let by_length = KeyCmpContext::new(|v: &&Vec<_>| v.len());
+let by_first_element = KeyCmpContext::new(|v: &&Vec<_>| v[0]);
+
+let by_length_long = by_length.wrap(&long_vec);
+let by_length_short = by_length.wrap(&short_vec);
+
+let by_first_element_long = by_first_element.wrap(&long_vec);
+let by_first_element_short = by_first_element.wrap(&short_vec);
+
+assert!(by_length_long > by_length_short,
+                    "The vec {:?} is longer then {:?}", long_vec, short_vec);
+assert!(by_first_element_long < by_first_element_short,
+                    "The vec's {:?} first element is smaller then {:?}'s", long_vec, short_vec);
+
+```
+
 ### By direct creation
-you can define the key function on a "case by case" basis.
+you can define the key function on a "case by case" basis. This is not recommended.
 ```rust
 use cmp_wrap::permissive::CmpByKey;
 
